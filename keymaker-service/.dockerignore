@@ -1,0 +1,10 @@
+target/*.original
+.git
+.gitignore
+.mvn
+.idea
+.vscode
+*.iml
+**/.config
+**/credentials
+**/*.json

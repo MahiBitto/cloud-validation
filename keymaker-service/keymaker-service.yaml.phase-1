@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: keymaker-service
+  namespace: namespace-uc002
+  labels:
+    app: keymaker-service
+    tenant: usecase-002
+spec:
+  type: ClusterIP
+  selector:
+    app: keymaker-service
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8071
+      targetPort: 8071

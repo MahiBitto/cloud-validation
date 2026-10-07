@@ -1,0 +1,120 @@
+package com.pxp.kms.service;
+
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.security.KeyStore;
+import java.security.SecureRandom;
+import java.security.Security;
+
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.springframework.stereotype.Service;
+
+@Service
+public class MasterKeyService {
+
+    static { Security.addProvider(new BouncyCastleProvider()); }
+
+    private static final String KEYSTORE_PATH = "./master-keystore.p12";
+    private static final String ALIAS = "kms-master-kek";
+    // In production, pass this via an Environment Variable!
+    private static final char[] PASSWORD = "SuperSecurePassword123!".toCharArray(); 
+
+    private SecretKey masterKey;
+
+    public MasterKeyService() throws Exception {
+        loadOrInitializeMasterKey();
+    }
+
+    /* private void loadOrInitializeMasterKey() throws Exception {
+        KeyStore keyStore = KeyStore.getInstance("PKCS12", "BC");
+        File file = new File(KEYSTORE_PATH);
+
+        if (file.exists()) {
+            try (FileInputStream fis = new FileInputStream(file)) {
+                keyStore.load(fis, PASSWORD);
+                this.masterKey = (SecretKey) keyStore.getKey(ALIAS, PASSWORD);
+            }
+        } else {
+            // First time setup: Generate a brand new Master Key (KEK)
+            keyStore.load(null, PASSWORD);
+            KeyGenerator keyGen = KeyGenerator.getInstance("AES", "BC");
+            keyGen.init(256, new SecureRandom());
+            this.masterKey = keyGen.generateKey();
+
+            KeyStore.SecretKeyEntry entry = new KeyStore.SecretKeyEntry(masterKey);
+            KeyStore.ProtectionParameter param = new KeyStore.PasswordProtection(PASSWORD);
+            keyStore.setEntry(ALIAS, entry, param);
+
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                keyStore.store(fos, PASSWORD);
+            }
+        }
+    } */
+
+
+    private void loadOrInitializeMasterKey() throws Exception {
+        // 1. Initialize using standard instance, or let BC handle it completely
+        KeyStore keyStore = KeyStore.getInstance("PKCS12", "BC");
+        File file = new File(KEYSTORE_PATH);
+
+        if (file.exists()) {
+            try (FileInputStream fis = new FileInputStream(file)) {
+                keyStore.load(fis, PASSWORD);
+                // Retrieve key using standard getKey method
+                this.masterKey = (SecretKey) keyStore.getKey(ALIAS, PASSWORD);
+            }
+        } else {
+            // First-time setup: Generate a brand new AES Master Key (KEK)
+            keyStore.load(null, PASSWORD);
+            KeyGenerator keyGen = KeyGenerator.getInstance("AES", "BC");
+            keyGen.init(256, new SecureRandom());
+            this.masterKey = keyGen.generateKey();
+
+            // 🌟 FIX: Instead of keyStore.setEntry(), use setKeyEntry directly.
+            // This explicitly signals to the provider that we are writing an encoded SecretKey.
+            keyStore.setKeyEntry(ALIAS, masterKey.getEncoded(), null);
+
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                keyStore.store(fos, PASSWORD);
+            }
+        }
+    }
+
+
+
+    private void loadOrInitializeMasterKeyAlternativeWay() throws Exception {
+        // 1. Initialize using standard instance, or let BC handle it completely
+        KeyStore keyStore = KeyStore.getInstance("BKS", "BC");
+        File file = new File(KEYSTORE_PATH);
+
+        if (file.exists()) {
+            try (FileInputStream fis = new FileInputStream(file)) {
+                keyStore.load(fis, PASSWORD);
+                this.masterKey = (SecretKey) keyStore.getKey(ALIAS, PASSWORD);
+            }
+        } else {
+            // First time setup: Generate a brand new Master Key (KEK)
+            keyStore.load(null, PASSWORD);
+            KeyGenerator keyGen = KeyGenerator.getInstance("AES", "BC");
+            keyGen.init(256, new SecureRandom());
+            this.masterKey = keyGen.generateKey();
+
+            KeyStore.SecretKeyEntry entry = new KeyStore.SecretKeyEntry(masterKey);
+            KeyStore.ProtectionParameter param = new KeyStore.PasswordProtection(PASSWORD);
+            keyStore.setEntry(ALIAS, entry, param);
+
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                keyStore.store(fos, PASSWORD);
+            }
+        }
+    }
+
+    public SecretKey getMasterKey() {
+        return this.masterKey;
+    }
+}

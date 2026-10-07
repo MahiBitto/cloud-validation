@@ -1,0 +1,108 @@
+package com.example.keymaker.service;
+
+import com.example.keymaker.model.KeyMaterialRecord;
+import com.example.keymaker.repository.KeyMaterialRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.Base64;
+import java.util.Properties;
+
+
+@Service
+public class KeymakerService {
+
+    private final KeyMaterialRepository repository;
+
+    private final GcpKmsService kmsService;
+
+    public KeymakerService(
+            KeyMaterialRepository repository,
+            GcpKmsService kmsService) {
+
+        this.repository = repository;
+        this.kmsService = kmsService;
+    }
+
+    public KeyMaterialRecord findKeyMaterial(
+            String safeName,
+            String keyName,
+            String keyRegion) {
+
+        return repository.findActiveKeyMaterial(
+                safeName,
+                keyName,
+                keyRegion
+        );
+    }
+
+
+    public byte[] fetchAndDecrypt(
+            String safeName,
+            String keyName,
+            String keyRegion) {
+
+        KeyMaterialRecord record =
+                repository.findActiveKeyMaterial(
+                        safeName,
+                        keyName,
+                        keyRegion
+                );
+
+        if (record == null) {
+            throw new IllegalArgumentException(
+                    "Key material not found"
+            );
+        }
+
+        try {
+            byte[] propertiesBytes =
+                    Base64.getDecoder().decode(
+                            record.keyMaterialJsonB64()
+                    );
+
+            Properties properties = new Properties();
+
+            properties.load(
+                    new java.io.ByteArrayInputStream(
+                            propertiesBytes
+                    )
+            );
+
+            String wrappedDek =
+                    properties.getProperty("gcpWrappedDEK");
+
+            if (wrappedDek == null) {
+                throw new IllegalStateException(
+                        "gcpWrappedDEK not found"
+                );
+            }
+
+            byte[] ciphertext =
+                    Base64.getDecoder().decode(wrappedDek);
+
+            byte[] decryptedDek =
+                    kmsService.decrypt(
+                            "prj-uc002-bigdata-dev-f2e2",
+                            record.keyRegion(),
+                            record.cloudKeyringName(),
+                            record.cloudKekIdentifier(),
+                            ciphertext
+                    );
+
+            if (decryptedDek.length != 32) {
+                throw new IllegalStateException(
+                        "Unexpected DEK length: "
+                                + decryptedDek.length
+                );
+            }
+
+            return decryptedDek;
+
+        } catch (Exception e) {
+            throw new IllegalStateException(
+                    "Failed to decrypt Keymaker DEK",
+                    e
+            );
+        }
+    }
+}

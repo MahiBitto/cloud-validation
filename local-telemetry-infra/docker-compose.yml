@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  
+  # FIX: Ensure 'jaeger-collector' is nested under services exactly with 2-space character padding alignment
+  jaeger-collector:
+    image: jaegertracing/all-in-one:1.57
+    ports:
+      - "16686:16686" # Dashboard Web Console UI Interface Access
+      - "4317:4317"   # OTLP gRPC Ingestion Port 
+      - "4318:4318"   # OTLP HTTP Ingestion Port

@@ -1,0 +1,128 @@
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.5)
+
+2026-09-15T11:39:08.095Z  INFO 1 --- [keymaker-service] [           main] c.example.keymaker.KeymakerApplication   : Starting KeymakerApplication v0.0.1-SNAPSHOT using Java 17.0.20 with PID 1 (/app/app.jar started by root in /app)
+2026-09-15T11:39:08.102Z  INFO 1 --- [keymaker-service] [           main] c.example.keymaker.KeymakerApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-09-15T11:39:11.455Z  INFO 1 --- [keymaker-service] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8071 (http)
+2026-09-15T11:39:11.481Z  INFO 1 --- [keymaker-service] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-09-15T11:39:11.482Z  INFO 1 --- [keymaker-service] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.44]
+2026-09-15T11:39:11.550Z  INFO 1 --- [keymaker-service] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-09-15T11:39:11.554Z  INFO 1 --- [keymaker-service] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 3308 ms
+2026-09-15T11:39:15.065Z  INFO 1 --- [keymaker-service] [           main] com.google.cloud.spanner.SpannerImpl     : Spanner options: 
+Project ID: prj-uc002-bigdata-dev-f2e2
+Host: https://spanner.googleapis.com
+Num gRPC channels: 4
+Leader aware routing enabled: true
+Direct access enabled: false
+Active Tracing Framework: OPEN_CENSUS
+API tracing enabled: false
+Extended tracing enabled: false
+End to end tracing enabled: false
+Built-in metrics enabled: true
+2026-09-15T11:39:15.066Z  INFO 1 --- [keymaker-service] [           main] com.google.cloud.spanner.SpannerImpl     : Session pool options: 
+Session pool min sessions: 100
+Session pool max sessions: 400
+Multiplexed sessions enabled: true
+Multiplexed sessions enabled for RW: true
+Multiplexed sessions enabled for blind write: true
+Multiplexed sessions enabled for partitioned ops: true
+2026-09-15T11:39:15.405Z  WARN 1 --- [keymaker-service] [           main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'keymakerController' defined in URL [jar:nested:/app/app.jar/!BOOT-INF/classes/!/com/example/keymaker/controller/KeymakerController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'keymakerService' defined in URL [jar:nested:/app/app.jar/!BOOT-INF/classes/!/com/example/keymaker/service/KeymakerService.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'gcpKmsService' defined in URL [jar:nested:/app/app.jar/!BOOT-INF/classes/!/com/example/keymaker/service/GcpKmsService.class]: Failed to instantiate [com.example.keymaker.service.GcpKmsService]: Constructor threw exception
+2026-09-15T11:39:17.762Z  INFO 1 --- [keymaker-service] [           main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+2026-09-15T11:39:17.798Z  INFO 1 --- [keymaker-service] [           main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-09-15T11:39:17.841Z ERROR 1 --- [keymaker-service] [           main] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'keymakerController' defined in URL [jar:nested:/app/app.jar/!BOOT-INF/classes/!/com/example/keymaker/controller/KeymakerController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'keymakerService' defined in URL [jar:nested:/app/app.jar/!BOOT-INF/classes/!/com/example/keymaker/service/KeymakerService.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'gcpKmsService' defined in URL [jar:nested:/app/app.jar/!BOOT-INF/classes/!/com/example/keymaker/service/GcpKmsService.class]: Failed to instantiate [com.example.keymaker.service.GcpKmsService]: Constructor threw exception
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1395) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1222) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1188) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1123) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987) ~[spring-context-6.2.10.jar!/:6.2.10]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627) ~[spring-context-6.2.10.jar!/:6.2.10]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146) ~[spring-boot-3.5.5.jar!/:3.5.5]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752) ~[spring-boot-3.5.5.jar!/:3.5.5]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439) ~[spring-boot-3.5.5.jar!/:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318) ~[spring-boot-3.5.5.jar!/:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361) ~[spring-boot-3.5.5.jar!/:3.5.5]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350) ~[spring-boot-3.5.5.jar!/:3.5.5]
+	at com.example.keymaker.KeymakerApplication.main(KeymakerApplication.java:14) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(Unknown Source) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Unknown Source) ~[na:na]
+	at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:102) ~[app.jar:0.0.1-SNAPSHOT]
+	at org.springframework.boot.loader.launch.Launcher.launch(Launcher.java:64) ~[app.jar:0.0.1-SNAPSHOT]
+	at org.springframework.boot.loader.launch.JarLauncher.main(JarLauncher.java:40) ~[app.jar:0.0.1-SNAPSHOT]
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'keymakerService' defined in URL [jar:nested:/app/app.jar/!BOOT-INF/classes/!/com/example/keymaker/service/KeymakerService.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'gcpKmsService' defined in URL [jar:nested:/app/app.jar/!BOOT-INF/classes/!/com/example/keymaker/service/GcpKmsService.class]: Failed to instantiate [com.example.keymaker.service.GcpKmsService]: Constructor threw exception
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1395) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1232) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1690) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1635) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	... 28 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'gcpKmsService' defined in URL [jar:nested:/app/app.jar/!BOOT-INF/classes/!/com/example/keymaker/service/GcpKmsService.class]: Failed to instantiate [com.example.keymaker.service.GcpKmsService]: Constructor threw exception
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1357) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1242) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:569) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:529) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:373) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1752) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1635) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	... 41 common frames omitted
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.example.keymaker.service.GcpKmsService]: Constructor threw exception
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:223) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:123) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1351) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	... 53 common frames omitted
+Caused by: java.io.IOException: Your default credentials were not found. To set up Application Default Credentials for your environment, see https://cloud.google.com/docs/authentication/external/set-up-adc.
+	at com.google.auth.oauth2.DefaultCredentialsProvider.getDefaultCredentials(DefaultCredentialsProvider.java:127) ~[google-auth-library-oauth2-http-1.39.1.jar!/:1.39.1]
+	at com.google.auth.oauth2.GoogleCredentials.getApplicationDefault(GoogleCredentials.java:192) ~[google-auth-library-oauth2-http-1.39.1.jar!/:1.39.1]
+	at com.google.auth.oauth2.GoogleCredentials.getApplicationDefault(GoogleCredentials.java:164) ~[google-auth-library-oauth2-http-1.39.1.jar!/:1.39.1]
+	at com.google.api.gax.core.GoogleCredentialsProvider.getCredentials(GoogleCredentialsProvider.java:70) ~[gax-2.70.3.jar!/:2.70.3]
+	at com.google.api.gax.rpc.ClientContext.getCredentials(ClientContext.java:295) ~[gax-2.70.3.jar!/:2.70.3]
+	at com.google.api.gax.rpc.ClientContext.create(ClientContext.java:181) ~[gax-2.70.3.jar!/:2.70.3]
+	at com.google.cloud.kms.v1.stub.GrpcKeyManagementServiceStub.create(GrpcKeyManagementServiceStub.java:529) ~[google-cloud-kms-2.79.0.jar!/:2.79.0]
+	at com.google.cloud.kms.v1.stub.KeyManagementServiceStubSettings.createStub(KeyManagementServiceStubSettings.java:699) ~[google-cloud-kms-2.79.0.jar!/:2.79.0]
+	at com.google.cloud.kms.v1.KeyManagementServiceClient.<init>(KeyManagementServiceClient.java:797) ~[google-cloud-kms-2.79.0.jar!/:2.79.0]
+	at com.google.cloud.kms.v1.KeyManagementServiceClient.create(KeyManagementServiceClient.java:779) ~[google-cloud-kms-2.79.0.jar!/:2.79.0]
+	at com.example.keymaker.service.GcpKmsService.<init>(GcpKmsService.java:19) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(Unknown Source) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Unknown Source) ~[na:na]
+	at java.base/java.lang.reflect.Constructor.newInstance(Unknown Source) ~[na:na]
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:197) ~[spring-beans-6.2.10.jar!/:6.2.10]
+	... 55 common frames omitted
+

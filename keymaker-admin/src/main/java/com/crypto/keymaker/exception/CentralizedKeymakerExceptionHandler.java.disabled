@@ -1,0 +1,37 @@
+package com.crypto.keymaker.exception;
+
+import com.crypto.keymaker.dto.base.KeymakerResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import java.util.NoSuchElementException;
+import java.util.UUID;
+
+@RestControllerAdvice
+public class CentralizedKeymakerExceptionHandler {
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<KeymakerResponse> handleThrottlingAndDepletionErrors(IllegalStateException ex) {
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                .body(KeymakerResponse.failure(UUID.randomUUID().toString(), "[SYSTEM BUSY] " + ex.getMessage()));
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<KeymakerResponse> handleMissingResourceFootprints(NoSuchElementException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(KeymakerResponse.failure(UUID.randomUUID().toString(), "[NOT FOUND] " + ex.getMessage()));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<KeymakerResponse> handleDataIntegrityConstraints(IllegalArgumentException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(KeymakerResponse.failure(UUID.randomUUID().toString(), "[BAD REQUEST] " + ex.getMessage()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<KeymakerResponse> handleGenericSystemOutages(Exception ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(KeymakerResponse.failure(UUID.randomUUID().toString(), "[FATAL CRASH] " + ex.getMessage()));
+    }
+}

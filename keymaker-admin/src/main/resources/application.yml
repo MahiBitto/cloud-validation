@@ -1,0 +1,46 @@
+server:
+  port: 8075
+
+keymaker:
+  region: US
+  current-region: US
+
+gcp:
+  project-id: pxp-bdp-dev
+
+spring:
+  application:
+    name: keymaker-service
+  cache:
+    type: caffeine
+    
+  # Google Cloud Spanner Connection Coordinates
+  cloud:
+    gcp:
+      project-id: pxp-bdp-dev
+      # Force spring-cloud-gcp drivers to bind directly to local containers
+      spanner:
+        emulator-host: localhost:9010
+        instance-id: keymaker-spanner-instance
+        database: datasecurity
+      pubsub:
+        emulator-host: localhost:8681
+        #subscription:
+        #  onboard-worker: keymaker-inbound-sub
+      #storage:
+      #  credentials:
+      #    encoded-key: "e30=" # Bypasses real IAM account lookups & Decodes safely to {} matching base64 syntax requirements
+      storage:
+        emulator-host: http://localhost:9023 # Point directly to the oittaa emulator container port
+
+logging:
+  level:
+    io.opentelemetry: DEBUG # Displays OTel transport network attempts directly in console
+
+management:
+  otlp:
+    tracing:
+      endpoint: http://localhost:4317 # Route span exports directly to your Jaeger gRPC container
+  tracing:
+    sampling:
+      probability: 1.0 # Sample 100% of local requests for easy developer verification

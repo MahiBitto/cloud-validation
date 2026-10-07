@@ -1,0 +1,39 @@
+package com.example.keymaker.config;
+
+import com.google.cloud.spanner.DatabaseClient;
+import com.google.cloud.spanner.Spanner;
+import com.google.cloud.spanner.SpannerOptions;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class SpannerConfig {
+
+    private static final String PROJECT_ID =
+            "prj-uc002-bigdata-dev-f2e2";
+
+    private static final String INSTANCE_ID =
+            "keymaker-spanner";
+
+    private static final String DATABASE_ID =
+            "keymaker-db";
+
+    @Bean
+    public Spanner spanner() {
+        return SpannerOptions.newBuilder()
+                .setProjectId(PROJECT_ID)
+                .build()
+                .getService();
+    }
+
+    @Bean
+    public DatabaseClient databaseClient(Spanner spanner) {
+        return spanner.getDatabaseClient(
+                com.google.cloud.spanner.DatabaseId.of(
+                        PROJECT_ID,
+                        INSTANCE_ID,
+                        DATABASE_ID
+                )
+        );
+    }
+}

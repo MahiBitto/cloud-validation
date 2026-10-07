@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+keymaker:
+  region: US
+  current-region: US
+
+gcp:
+  project-id: pxp-bdp-dev
+
+spring:
+  application:
+    name: keymaker-service
+  cache:
+    type: caffeine
+    
+  # Google Cloud Spanner Connection Coordinates
+  cloud:
+    gcp:
+      spanner:
+        project-id: pxp-bdp-dev
+        instance-id: keymaker-spanner-instance
+        database: datasecurity

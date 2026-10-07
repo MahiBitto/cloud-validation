@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: keymaker-service
+
+server:
+  port: 8071
+
+keymaker:
+  gcp:
+    project-id: prj-uc002-bigdata-dev-f2e2
+    spanner:
+      instance: keymaker-spanner
+      database: keymaker-db
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+  endpoint:
+    health:
+      probes:
+        enabled: true

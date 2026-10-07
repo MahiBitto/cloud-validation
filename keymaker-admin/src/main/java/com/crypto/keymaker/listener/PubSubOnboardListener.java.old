@@ -1,0 +1,35 @@
+package com.crypto.keymaker.listener;
+
+import com.crypto.keymaker.dto.OnboardRequest;
+import com.crypto.keymaker.orchestrator.OnboardOrchestrator;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.cloud.pubsub.v1.AckReplyConsumer;
+import com.google.cloud.pubsub.v1.MessageReceiver;
+import com.google.pubsub.v1.PubsubMessage;
+import org.springframework.stereotype.Component;
+import java.util.UUID;
+
+@Component
+public class PubSubOnboardListener implements MessageReceiver {
+
+    private final OnboardOrchestrator orchestrator;
+    private final ObjectMapper mapper;
+
+    public PubSubOnboardListener(OnboardOrchestrator orchestrator, ObjectMapper mapper) {
+        this.orchestrator = orchestrator;
+        this.mapper = mapper;
+    }
+
+    @Override
+    public void receiveMessage(PubsubMessage message, AckReplyConsumer consumer) {
+        String correlationId = message.getAttributesOrDefault("correlation_id", UUID.randomUUID().toString());
+        try {
+            OnboardRequest request = mapper.readValue(message.getData().toStringUtf8(), OnboardRequest.class);
+            orchestrator.executeOnboard(request, correlationId);
+            consumer.ack();
+        } catch (Exception e) {
+            System.err.printf("Async message tracking failure for ID: %s. Re-queueing payload. Error: %s%n", correlationId, e.getMessage());
+            consumer.nack(); // Triggers message retry loop
+        }
+    }
+}
